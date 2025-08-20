@@ -1,3 +1,9 @@
-estudar groovy,iniciar a trilha de aprendizado,2025-05-18,2,acelera,TODO
-Estudar sobre banco de Dados,Rever sobre os conceitos de algebra relacional,2025-08-22,3,Faculdade,TODO
-ir ao mercadinho,comprar pão de sal,2025-05-18,3,pessoal,TODO
+Estudar Spring Boot$$Praticar criação de APIs REST$$2025-09-01$$1$$Estudos$$TODO
+Estudar Threads em Java$$Implementar exemplo com ExecutorService$$2025-09-02$$2$$Estudos$$TODO
+Fazer backup do notebook$$Salvar arquivos no HD externo$$2025-08-25$$1$$Casa$$TODO
+Limpar a geladeira$$Jogar fora itens vencidos$$2025-08-26$$2$$Casa$$TODO
+Levar o gato ao veterinário$$Consulta de rotina$$2025-08-28$$1$$Animais$$TODO
+Pagar conta de luz$$Vence dia 30/08$$2025-08-29$$1$$Finanças$$TODO
+Organizar documentos$$Separar contas pagas e recibos$$2025-09-05$$2$$Casa$$TODO
+Estudar Docker$$Aprender conceitos básicos e comandos$$2025-09-06$$1$$Estudos$$TODO
+Revisar código do projeto CineVault$$Melhorar organização e adicionar testes$$2025-09-12$$1$$Trabalho$$TODO

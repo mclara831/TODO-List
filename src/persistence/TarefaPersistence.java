@@ -30,7 +30,7 @@ public class TarefaPersistence {
 
             String line;
             while ((line = br.readLine()) != null) {
-                String[] dados = line.split(",");
+                String[] dados = line.split("\\$\\$");
                 Tarefa t = new Tarefa(dados[0],
                         dados[1],
                         LocalDate.parse(dados[2]),

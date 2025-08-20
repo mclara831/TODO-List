@@ -78,11 +78,11 @@ public class Tarefa implements Comparable<Tarefa> {
 
     @Override
     public String toString() {
-        return nome + ","
-                + descricao + ","
-                + dataTermino + ","
-                + nivelPrioridade + ","
-                + categoria + ","
+        return nome + "$$"
+                + descricao + "$$"
+                + dataTermino + "$$"
+                + nivelPrioridade + "$$"
+                + categoria + "$$"
                 + status;
     }
 

@@ -6,6 +6,7 @@ import services.TarefaService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class UI {
@@ -15,8 +16,23 @@ public class UI {
 
     private static final Scanner input = new Scanner(System.in);
 
+    private static LocalDate lerData() {
+        boolean continuar = true;
+        LocalDate dataFormatada = null;
+        while (continuar) {
+            try {
+                String data = input.next();
+                dataFormatada = LocalDate.parse(data, dtf);
+                continuar = false;
+            } catch (DateTimeParseException e) {
+                System.out.println("Data está em formato inválido!");
+            }
+        }
+        return dataFormatada;
+    }
+
     public static void menu() {
-        System.out.println("\n=== MENU DE OPÇÕES ===");
+        System.out.println("\n============================== MENU DE OPÇÕES ==============================");
         System.out.println("1.  Criar nova tarefa");
         System.out.println("2.  Deletar tarefa");
         System.out.println("3.  Listar tarefas por categoria");
@@ -28,6 +44,7 @@ public class UI {
         System.out.println("9.  Atualizar todos os dados de uma tarefa");
         System.out.println("10. Atualizar status de uma tarefa");
         System.out.println("0.  Sair");
+        System.out.println("==============================================================================");
         System.out.print("Escolha uma opção: ");
     }
 
@@ -41,8 +58,6 @@ public class UI {
 
     public static void criarNovaTarefa() {
         input.nextLine();
-
-
         service.criarNovaTarefa(inserirDadosTarefa());
     }
 
@@ -53,7 +68,7 @@ public class UI {
         System.out.println("Digite a descricao da tarefa: ");
         String descricao = input.nextLine();
         System.out.println("Digite a data de termino da tarefa (dd/mm/yyyy): ");
-        String data = input.nextLine();
+        LocalDate data = lerData();
 
         System.out.println("Em uma escala de 1 (mais alto) a 5 (mais baixo): qual é a prioridade desse tarefa? ");
         int prioridade =  input.nextInt();
@@ -88,7 +103,7 @@ public class UI {
             case 3 -> Status.DONE;
             default -> null;
         };
-        return new Tarefa(nome, descricao, LocalDate.parse(data, dtf), prioridade, categoria, status);
+        return new Tarefa(nome, descricao, data, prioridade, categoria, status);
     }
 
 
@@ -179,12 +194,12 @@ public class UI {
     public static void listarTarefasPorData() {
         input.nextLine();
         System.out.println("Digite o inicio do periodo de busca (dd/mm/yyyy) ");
-        String inicio = input.nextLine();
+        LocalDate inicio = lerData();
         input.nextLine();
         System.out.println("Digite o final do periodo de busca (dd/mm/yyyy) ");
-        String fim = input.nextLine();
+        LocalDate fim = lerData();
 
-        var tarefas = service.listarTarefasPorData(LocalDate.parse(inicio, dtf), LocalDate.parse(fim, dtf));
+        var tarefas = service.listarTarefasPorData(inicio, fim);
         System.out.println("Lista de tarefas para concluir de " + inicio + " até " + fim + ": ");
         tarefas.forEach(tarefa -> System.out.println(tarefa.tarefaToString()));
     }

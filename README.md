@@ -38,3 +38,8 @@ java -jar todo_list.jar
 ## 📂 Estrutura do projeto
 
 `src/Application.java` → Classe principal para executar a aplicação.
+
+---
+## 👩‍💻 Créditos
+
+- Maria Clara Barbosa Fernandes
