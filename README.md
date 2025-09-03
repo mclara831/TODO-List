@@ -2,8 +2,7 @@
 
 Esse projeto foi desenvolvido como proposta de resolução de ZG-Hero Project da trilha de Java do Acelera ZG.
 
-Um simples projeto de **lista de tarefas** desenvolvido em **Java**.  
-Permite criar, listar e gerenciar tarefas de forma prática.
+Um simples projeto de **lista de tarefas** que permite criar, listar e gerenciar tarefas de forma prática.
 
 ---
 
@@ -22,7 +21,14 @@ Permite criar, listar e gerenciar tarefas de forma prática.
 ---
 
 ## 🛠️ Tecnologias utilizadas
-- Java
+
+### Front-end:
+    - CSS
+    - HTML
+    - Javascript
+
+### Back-end:
+    - Java
 
 ---
 
