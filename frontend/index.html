@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="js/script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <title>Gerenciador de Tarefas</title>
+</head>
+
+<body>
+    <header>
+        <h1>Gerenciador de Tarefas</h1>
+    </header>
+    <main>
+        <div id="container">
+            <div id="tarefas-container">
+                <div id="header">
+                    <p>Minhas tarefas</p>
+                    <div id="header-btn">
+                        <label for="filtrar">Filtrar por:</label>
+                        <select name="filtrar" id="filtrar">
+                            <option value="all" selected>Todos</option>
+                            <option value="To do">To do</option>
+                            <option value="Doing">Doing</option>
+                            <option value="Done">Done</option>
+                        </select>
+                        <button id="filter-btn" class="btn">Filtrar</button>
+                        <button id="nova_tarefa" class="btn">Criar nova tarefa</button>
+                    </div>
+                </div>
+                <div id="tarefas">
+                    <ul id="lista">
+                        <li>
+                            <div class="title">
+                                <p id="titulo">Lorem ipsum dol </p>
+                                <div id="tarefa-btn">
+                                    <button class="editar btn">Editar</button>
+                                    <button class="deletar btn">Deletar</button>
+                                    <button class="ver-detalhes btn">Ver detalhes</button>
+                                </div>
+                            </div>
+                            <div class="detalhes" style="display: none;">
+                                <p>Descrição: <span></span></p>
+                                <p>Categoria: <span></span></p>
+                                <p>Data término: <span></span></p>
+                                <p>Prioridade: <span></span></p>
+                                <p>Status: <span></span></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="title">
+                                <p id="titulo">Lorem ipsum dol </p>
+                                <div id="tarefa-btn">
+                                    <button class="editar btn">Editar</button>
+                                    <button class="deletar btn">Deletar</button>
+                                    <button class="ver-detalhes btn">Ver detalhes</button>
+                                </div>
+                            </div>
+                            <div class="detalhes" style="display: none;">
+                                <p>Descrição: <span></span></p>
+                                <p>Categoria: <span></span></p>
+                                <p>Data término: <span></span></p>
+                                <p>Prioridade: <span></span></p>
+                                <p>Status: <span></span></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <form id="nova-tarefa-form" style="display: none">
+                <h2>Adicionar nova tarefa</h2>
+                <div>
+                    <label for="nome"><span class="obrigatorio">*</span>Nome: </label>
+                    <input name="nome" type="text">
+                </div>
+                <div>
+                    <label for="descricao">Descrição: </label>
+                    <textarea name="descricao" id="descricao"></textarea>
+                </div>
+                <div>
+                    <label for="categoria"><span class="obrigatorio">*</span>Categoria: </label>
+                    <input name="categoria" type="text">
+                </div>
+                <div>
+                    <label for="data-termino"><span class="obrigatorio">*</span>Data término da tarefa:</label>
+                    <input type="date" id="data-termino" name="data-termino">
+                </div>
+                <div>
+                    <label for="prioridade"><span class="obrigatorio">*</span>Prioridade:</label>
+                    <select name="prioridade" id="prioridade" required>
+                        <option value="" disabled selected>Selecione...</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="status"><span class="obrigatorio">*</span>Status:</label>
+                    <select name="status" id="status" required>
+                        <option value="" disabled selected>Selecione...</option>
+                        <option value="To do">To do</option>
+                        <option value="Doing">Doing</option>
+                        <option value="Done">Done</option>
+                    </select>
+                    </select>
+                </div>
+                <div id="forms-btn">
+                    <button id="form-btn" class="btn">Adicionar tarefa</button>
+                    <button id="return-btn" class="btn">Voltar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <span id="current_year"></span>
+        <p>&copy; Maria Clara</p>
+    </footer>
+</body>
+
+</html>
