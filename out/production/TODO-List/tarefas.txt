@@ -1,9 +1,9 @@
-Fazer backup do notebook$$Salvar arquivos no HD externo$$2025-08-25$$1$$Casa$$TODO$$false$$null
-Estudar Spring Boot$$Praticar criação de APIs REST$$2025-09-01$$1$$Estudos$$TODO$$true$$2025-09-04T13:04
-Estudar Threads em Java$$Implementar exemplo com ExecutorService$$2025-09-02$$2$$Estudos$$TODO$$true$$2025-09-04T13:04
-Limpar a geladeira$$Jogar fora itens vencidos$$2025-08-26$$2$$Casa$$TODO$$true$$2025-09-04T13:04
-Levar o gato ao veterinário$$Consulta de rotina$$2025-08-28$$1$$Animais$$TODO$$false$$null
-Pagar conta de luz$$Vence dia 30/08$$2025-08-29$$1$$Finanças$$TODO$$true$$2025-08-17T15:08
-Organizar documentos$$Separar contas pagas e recibos$$2025-09-05$$2$$Casa$$TODO$$true$$2025-09-04T13:04
+Fazer backup do notebook$$Salvar arquivos no HD externo$$2025-09-25$$1$$Casa$$TODO$$false$$null
+Estudar Spring Boot$$Praticar criação de APIs REST$$2025-09-01$$1$$Estudos$$TODO$$true$$2025-09-04T17:17
+Estudar Threads em Java$$Implementar exemplo com ExecutorService$$2025-09-02$$2$$Estudos$$TODO$$true$$2025-09-04T17:16
+Limpar a geladeira$$Jogar fora itens vencidos$$2025-09-26$$2$$Casa$$TODO$$true$$2025-09-04T17:17
+Levar o gato ao veterinário$$Consulta de rotina$$2025-09-28$$1$$Animais$$TODO$$false$$null
+Pagar conta de luz$$Vence dia 30/09$$2025-09-29$$1$$Finanças$$TODO$$true$$2025-09-17T15:09
+Organizar documentos$$Separar contas pagas e recibos$$2025-09-05$$2$$Casa$$TODO$$true$$2025-09-04T17:16
 Estudar Docker$$Aprender conceitos básicos e comandos$$2025-09-06$$1$$Estudos$$TODO$$false$$null
-Revisar código do projeto CineVault$$Melhorar organização e adicionar testes$$2025-09-12$$1$$Trabalho$$TODO$$true$$2025-09-04T13:04
+Revisar código do projeto CineVault$$Melhorar organização e adicionar testes$$2025-09-12$$1$$Trabalho$$TODO$$true$$2025-09-04T17:15
