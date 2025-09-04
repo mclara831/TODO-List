@@ -11,15 +11,21 @@ import java.util.List;
 
 public class TarefaService {
 
-    private static List<Tarefa> tarefaList = new ArrayList<>();
-    private static TarefaPersistence persistence = new TarefaPersistence();
+    private final TarefaPersistence persistence;
+    private List<Tarefa> tarefaList;
+
+    public TarefaService() {
+        this.tarefaList = new ArrayList<>();
+        this.persistence = new TarefaPersistence();
+        carregarTarefas();
+    }
 
     public List<Tarefa> getTarefaList() {
         return tarefaList;
     }
 
-    public static void carregarTarefas() {
-        tarefaList = persistence.lerTodasTarefas();
+    public void carregarTarefas() {
+        this.tarefaList = this.persistence.lerTodasTarefas();
 
     }
 
@@ -30,7 +36,7 @@ public class TarefaService {
 
     public void deletarTarefa(String tarefa) {
         for (Tarefa t : tarefaList) {
-            if (t.getNome().equalsIgnoreCase(tarefa.trim().toLowerCase()))  {
+            if (t.getNome().equalsIgnoreCase(tarefa.trim().toLowerCase())) {
                 tarefaList.remove(t);
                 break;
             }
@@ -88,13 +94,13 @@ public class TarefaService {
         return tarefas;
     }
 
-    public static void salvarDados() {
-        persistence.salvarDados(tarefaList);
+    public void salvarDados() {
+        persistence.salvarDados(this.tarefaList);
     }
 
     public void atualizarTodaTarefaPorNome(String nome, Tarefa tarefa) {
         for (Tarefa t : tarefaList) {
-            if (t.getNome().equalsIgnoreCase(nome.trim().toLowerCase()))  {
+            if (t.getNome().equalsIgnoreCase(nome.trim().toLowerCase())) {
                 int index = tarefaList.indexOf(t);
                 tarefaList.set(index, tarefa);
             }

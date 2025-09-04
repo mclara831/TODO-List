@@ -1,4 +1,5 @@
 import CLI.UI;
+import services.AlarmeService;
 import services.TarefaService;
 
 import java.util.Scanner;
@@ -6,49 +7,56 @@ import java.util.Scanner;
 public class Application {
     public static void main(String[] args) {
 
-        TarefaService.carregarTarefas();
+        TarefaService tarefaService = new TarefaService();
+        UI ui = new UI(tarefaService);
+        AlarmeService alarmeService = new AlarmeService(tarefaService);
+
+        Thread alarme = new Thread(alarmeService);
+        alarme.start();
+
         boolean continuar = true;
         Scanner sc = new Scanner(System.in);
         int opcao;
         while (continuar) {
 
-            UI.menu();
+            ui.menu();
 
             opcao = sc.nextInt();
 
             switch (opcao) {
                 case 1:
-                    UI.criarNovaTarefa();
+                    ui.criarNovaTarefa();
                     break;
                 case 2:
-                    UI.deletarTarefa();
+                    ui.deletarTarefa();
                     break;
                 case 3:
-                    UI.listarTarefasPorCategoria();
+                    ui.listarTarefasPorCategoria();
                     break;
                 case 4:
-                    UI.listarTarefasPorPrioridade();
+                    ui.listarTarefasPorPrioridade();
                     break;
                 case 5:
-                    UI.listarTarefasPorStatus();
+                    ui.listarTarefasPorStatus();
                     break;
                 case 6:
-                    UI.listarNumeroDeTarefasPorStatus();
+                    ui.listarNumeroDeTarefasPorStatus();
                     break;
                 case 7:
-                    UI.listarTarefasPorData();
+                    ui.listarTarefasPorData();
                     break;
                 case 8:
-                    UI.listarTodasTarefas();
+                    ui.listarTodasTarefas();
                     break;
                 case 9:
-                    UI.atualizarTodaTarefaPorNome();
+                    ui.atualizarTodaTarefaPorNome();
                     break;
                 case 10:
-                    UI.atualizarStatusTarefaPorNome();
+                    ui.atualizarStatusTarefaPorNome();
                     break;
                 case 0:
-                    TarefaService.salvarDados();
+                    tarefaService.salvarDados();
+                    alarme.interrupt();
                     continuar = false;
                     System.out.println("Encerrando o programa...");
                     break;

@@ -1,6 +1,7 @@
 package entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Tarefa implements Comparable<Tarefa> {
     private String nome;
@@ -9,14 +10,18 @@ public class Tarefa implements Comparable<Tarefa> {
     private Integer nivelPrioridade;
     private String categoria;
     private Status status;
+    private Boolean alarmeAtivo;
+    private LocalDateTime alarme;
 
-    public Tarefa(String nome, String descricao, LocalDate dataTermino, Integer nivelPrioridade, String categoria, Status status) {
+    public Tarefa(String nome, String descricao, LocalDate dataTermino, Integer nivelPrioridade, String categoria, Status status, Boolean alarmeAtivo, LocalDateTime alarme) {
         this.nome = nome;
         this.descricao = descricao;
         this.dataTermino = dataTermino;
         this.nivelPrioridade = nivelPrioridade;
         this.categoria = categoria;
         this.status = status;
+        this.alarmeAtivo = alarmeAtivo;
+        this.alarme = alarme;
     }
 
     public String getNome() {
@@ -51,7 +56,7 @@ public class Tarefa implements Comparable<Tarefa> {
         this.nivelPrioridade = nivelPrioridade;
     }
 
-    public String  getCategoria() {
+    public String getCategoria() {
         return categoria;
     }
 
@@ -67,13 +72,34 @@ public class Tarefa implements Comparable<Tarefa> {
         this.status = status;
     }
 
+    public Boolean getAlarmeAtivo() {
+        return alarmeAtivo;
+    }
+
+    public void setAlarmeAtivo(Boolean alarmeAtivo) {
+        this.alarmeAtivo = alarmeAtivo;
+    }
+
+    public LocalDateTime getAlarme() {
+        return alarme;
+    }
+
+    public void setAlarme(LocalDateTime alarme) {
+        this.alarme = alarme;
+    }
+
     public String tarefaToString() {
-        return "\n\nNome: " + nome
+        String saida = "\n\nNome: " + nome
                 + "\nDescricao: " + descricao
                 + "\nDataTermino: " + dataTermino
                 + "\nNivelPrioridade: " + nivelPrioridade
                 + "\nCategoria: " + categoria
                 + "\nStatus: " + status;
+
+        if (alarmeAtivo) {
+            saida += "\nAlarme: " + alarme;
+        }
+        return saida;
     }
 
     @Override
@@ -83,16 +109,18 @@ public class Tarefa implements Comparable<Tarefa> {
                 + dataTermino + "$$"
                 + nivelPrioridade + "$$"
                 + categoria + "$$"
-                + status;
+                + status + "$$"
+                + alarmeAtivo + "$$"
+                + alarme;
     }
 
     @Override
     public int compareTo(Tarefa tarefa) {
         if (this.nivelPrioridade > tarefa.nivelPrioridade) {
             return 1;
-        } else  if (this.nivelPrioridade == tarefa.nivelPrioridade) {
+        } else if (this.nivelPrioridade == tarefa.nivelPrioridade) {
             return 0;
-        }  else {
+        } else {
             return -1;
         }
     }

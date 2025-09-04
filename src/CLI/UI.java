@@ -5,18 +5,24 @@ import entities.Tarefa;
 import services.TarefaService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class UI {
 
-    private static final TarefaService service = new TarefaService();
-    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private TarefaService service;
+    private Scanner input;
 
-    private static final Scanner input = new Scanner(System.in);
+    public UI(TarefaService tarefaService) {
+        this.service = tarefaService;
+        input = new Scanner(System.in);
+    }
 
-    private static LocalDate lerData() {
+    private LocalDate lerData() {
         boolean continuar = true;
         LocalDate dataFormatada = null;
         while (continuar) {
@@ -25,13 +31,20 @@ public class UI {
                 dataFormatada = LocalDate.parse(data, dtf);
                 continuar = false;
             } catch (DateTimeParseException e) {
-                System.out.println("Data está em formato inválido!");
+                System.out.println("Data está em formato inválido! Digite novamente: ");
             }
         }
         return dataFormatada;
     }
 
-    public static void menu() {
+    private LocalTime lerHorario() {
+        input.nextLine();
+        String horaStr = input.nextLine(); // lê string
+        DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
+        return LocalTime.parse(horaStr, formatterHora);
+    }
+
+    public void menu() {
         System.out.println("\n============================== MENU DE OPÇÕES ==============================");
         System.out.println("1.  Criar nova tarefa");
         System.out.println("2.  Deletar tarefa");
@@ -48,7 +61,7 @@ public class UI {
         System.out.print("Escolha uma opção: ");
     }
 
-    public static void listarTodasTarefas() {
+    public void listarTodasTarefas() {
         var tarefas = service.getTarefaList();
         System.out.println("\nTodas Tarefas:");
         for (Tarefa t : tarefas) {
@@ -56,12 +69,12 @@ public class UI {
         }
     }
 
-    public static void criarNovaTarefa() {
+    public void criarNovaTarefa() {
         input.nextLine();
         service.criarNovaTarefa(inserirDadosTarefa());
     }
 
-    public static Tarefa inserirDadosTarefa() {
+    public Tarefa inserirDadosTarefa() {
         System.out.println("Digite o nome do tarefa: ");
         String nome = input.nextLine();
         input.nextLine();
@@ -71,11 +84,11 @@ public class UI {
         LocalDate data = lerData();
 
         System.out.println("Em uma escala de 1 (mais alto) a 5 (mais baixo): qual é a prioridade desse tarefa? ");
-        int prioridade =  input.nextInt();
+        int prioridade = input.nextInt();
         while (prioridade < 1 || prioridade > 5) {
             System.out.println("Prioridade inválida! Digite novamente!");
             System.out.println("Em uma escala de 1 a 5: qual é a prioridade desse tarefa? ");
-            prioridade =  input.nextInt();
+            prioridade = input.nextInt();
         }
 
         input.nextLine();
@@ -103,37 +116,69 @@ public class UI {
             case 3 -> Status.DONE;
             default -> null;
         };
-        return new Tarefa(nome, descricao, data, prioridade, categoria, status);
+
+        System.out.println("\nGostaria de definir um alarme de lembrete para essa tarefa (s/n)? ");
+        char alarme = input.next().charAt(0);
+        while (alarme != 's' && alarme != 'n') {
+            System.out.println("Digite novamente! Gostaria de definir um alarme de lembrete para essa tarefa (s/n)? ");
+            alarme = input.next().charAt(0);
+        }
+
+        boolean alarmeAtivo;
+        LocalDate dataAlarme;
+        LocalTime timeAlarme;
+        LocalDateTime alarmeCompleto = null;
+        if (alarme == 's') {
+
+            alarmeAtivo = true;
+
+            System.out.println("Digite o dia do alarme(dd/mm/yyyy): ");
+            dataAlarme = lerData();
+            System.out.println("Digite o horário do alarme(hh:mm): ");
+            timeAlarme = lerHorario();
+            alarmeCompleto = LocalDateTime.of(dataAlarme, timeAlarme);
+
+            while(alarmeCompleto.toLocalDate().isAfter(data)) {
+                System.out.println("\n[AVISO]: A data digitada está para depois da data de término da tarefa: " + data+ ". Digite novamente!");
+                System.out.println("Digite o dia do alarme(dd/mm/yyyy): ");
+                dataAlarme = lerData();
+                alarmeCompleto = LocalDateTime.of(dataAlarme, timeAlarme);
+            }
+
+        } else {
+            alarmeAtivo = false;
+        }
+        return new Tarefa(nome, descricao, data, prioridade, categoria, status, alarmeAtivo, alarmeCompleto);
     }
 
 
-    public static void deletarTarefa() {
+    public void deletarTarefa() {
         input.nextLine();
         System.out.println("Digite o nome do tarefa: ");
         String nome = input.nextLine();
         service.deletarTarefa(nome);
     }
 
-    public static void listarTarefasPorCategoria(){
+    public void listarTarefasPorCategoria() {
         input.nextLine();
         System.out.println("Digite o nome da categoria: ");
         String categoria = input.nextLine();
-        var tarefas =  service.listarTarefaPorCategoria(categoria);
+        var tarefas = service.listarTarefaPorCategoria(categoria);
 
         System.out.println("Lista de tarefas na categoria: " + categoria);
         tarefas.forEach(tarefa -> System.out.println(tarefa.tarefaToString()));
     }
 
-    public static void listarTarefasPorPrioridade(){
+    public void listarTarefasPorPrioridade() {
         System.out.println("Digite o número da prioridade: ");
         Integer prioridade = input.nextInt();
-        var tarefas =  service.listarTarefaPorPrioridade(prioridade);
+        var tarefas = service.listarTarefaPorPrioridade(prioridade);
 
         System.out.println("Lista de tarefas em prioridade: " + prioridade);
         tarefas.forEach(tarefa -> System.out.println(tarefa.tarefaToString()));
     }
 
-    public static void listarTarefasPorStatus(){
+    public void listarTarefasPorStatus() {
 
         System.out.println("\n1. TODO (para fazer)");
         System.out.println("2. DOING (fazendo)");
@@ -142,7 +187,7 @@ public class UI {
         int statusTarefa = input.nextInt();
 
         while (statusTarefa < 1 || statusTarefa > 3) {
-            System.out.println("Digite novamente!");
+            System.out.println("\n[AVISO]: Entrada inválida! Digite novamente!");
             System.out.println("\n1. TODO (para fazer)");
             System.out.println("2. DOING (fazendo)");
             System.out.println("3. DONE (feita)");
@@ -157,13 +202,13 @@ public class UI {
             default -> null;
         };
 
-        var tarefas =  service.listarTarefaPorStatus(status);
+        var tarefas = service.listarTarefaPorStatus(status);
 
         System.out.println("Lista de tarefas em status: " + status);
         tarefas.forEach(tarefa -> System.out.println(tarefa.tarefaToString()));
     }
 
-    public static void listarNumeroDeTarefasPorStatus(){
+    public void listarNumeroDeTarefasPorStatus() {
 
         System.out.println("\n1. TODO (para fazer)");
         System.out.println("2. DOING (fazendo)");
@@ -190,8 +235,8 @@ public class UI {
         Integer numeroTarefa = service.listarNumeroDeTarefaPorStatus(status);
         System.out.println("Total de tarefas em status " + status + ": " + numeroTarefa);
     }
-    
-    public static void listarTarefasPorData() {
+
+    public void listarTarefasPorData() {
         input.nextLine();
         System.out.println("Digite o inicio do periodo de busca (dd/mm/yyyy) ");
         LocalDate inicio = lerData();
@@ -203,8 +248,8 @@ public class UI {
         System.out.println("Lista de tarefas para concluir de " + inicio + " até " + fim + ": ");
         tarefas.forEach(tarefa -> System.out.println(tarefa.tarefaToString()));
     }
-    
-    public static void atualizarTodaTarefaPorNome() {
+
+    public void atualizarTodaTarefaPorNome() {
         input.nextLine();
         System.out.println("Digite o nome do tarefa que deseja atualizar: ");
         String nome = input.nextLine();
@@ -215,7 +260,7 @@ public class UI {
         service.atualizarTodaTarefaPorNome(nome, t);
     }
 
-    public static void atualizarStatusTarefaPorNome() {
+    public void atualizarStatusTarefaPorNome() {
         input.nextLine();
         System.out.println("Digite o nome do tarefa que deseja atualizar: ");
         String nome = input.nextLine();
@@ -227,7 +272,7 @@ public class UI {
         int statusTarefa = input.nextInt();
 
         while (statusTarefa < 1 || statusTarefa > 3) {
-            System.out.println("Digite novamente!");
+            System.out.println("\n[AVISO]: Entrada inválida! Digite novamente!");
             System.out.println("\n1. TODO (para fazer)");
             System.out.println("2. DOING (fazendo)");
             System.out.println("3. DONE (feita)");
