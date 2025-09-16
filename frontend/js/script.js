@@ -1,38 +1,27 @@
-var tarefas = [
-  {
-    nome: "Limpar a casa",
-    descricao: "Lavar o banheiro",
-    categoria: "Casa",
-    dataTermino: "2025-09-03",
-    prioridade: "2",
-    status: "To do",
-  },
-  {
-    nome: "Finalizar a trilha de JS",
-    descricao: "Projeto prático",
-    categoria: "Acelera ZG",
-    dataTermino: "2025-09-03",
-    prioridade: "1",
-    status: "Doing",
-  },
-  {
-    nome: "Ir a mercado",
-    descricao: "Comprar pão de sal e manteiga",
-    categoria: "Casa",
-    dataTermino: "2025-09-02",
-    prioridade: "2",
-    status: "Done",
-  }
-];
-
-carregartarefas();
 let tarefaEditando = null;
+
+function getLocalStorage() {
+  return JSON.parse(localStorage.getItem("tarefas"))
+}
+
+console.log(getLocalStorage())
+
+function setNewObjectToLocalStorage(obj) {
+  var tarefas = getLocalStorage()
+  tarefas.push(obj)
+  localStorage.setItem("tarefas", JSON.stringify(tarefas))
+}
+
+function setArrayToLocalStorage(arr) {
+  localStorage.setItem("tarefas", JSON.stringify(arr))
+}
 
 document.querySelector("#current_year").innerHTML = new Date().getFullYear();
 document.querySelector("#filtrar").value = 'all';
 
 
 function carregartarefas() {
+  var tarefas = getLocalStorage()
   var lista = document.querySelector("#lista");
   lista.innerHTML = "";
 
@@ -90,18 +79,20 @@ document.querySelector("#nova_tarefa").onclick = function () {
 document.querySelector("#form-btn").onclick = function (event) {
   event.preventDefault();
   var form = document.querySelector("#nova-tarefa-form");
-
+  
   const nome = form.elements["nome"].value;
   const descricao = form.elements["descricao"].value;
   const categoria = form.elements["categoria"].value;
   const dataTermino = form.elements["data-termino"].value;
   const prioridade = form.elements["prioridade"].value;
   const status = form.elements["status"].value;
-
+  
   if (!nome || !categoria || !dataTermino || !prioridade || !status) {
     alert("Preencha todos os campos obrigatórios!");
     return;
   }
+
+  var tarefas = getLocalStorage()
 
   const tarefa = {
     nome,
@@ -119,6 +110,8 @@ document.querySelector("#form-btn").onclick = function (event) {
   } else {
     tarefas.push(tarefa);
   }
+
+  setArrayToLocalStorage(tarefas)
 
   form.style.display = "none";
   document.querySelector("#tarefas-container").style.display = "initial";
@@ -142,16 +135,19 @@ function verDetalhes() {
 }
 
 function deletarTarefa() {
+  var tarefas = getLocalStorage()
   document.querySelectorAll(".deletar").forEach((element) => {
     element.onclick = function (event) {
       const index = event.target.dataset.index;
       tarefas.splice(index, 1);
+      setArrayToLocalStorage(tarefas)
       carregartarefas();
     };
   });
 }
 
 function atualizarTarefa() {
+  var tarefas = getLocalStorage()
   var atualizar_btns = document.querySelectorAll(".editar");
   for (let i = 0; i < tarefas.length; i++) {
     atualizar_btns[i].onclick = function () {
@@ -177,6 +173,9 @@ function atualizarTarefa() {
 
 // filtrar tarefas
 document.querySelector("#filter-btn").onclick = function () {
+
+  var tarefas = getLocalStorage()
+
   var value = document.querySelector("#filtrar").value;
   var lista = document.querySelector("#lista");
   lista.innerHTML = "";
@@ -210,3 +209,5 @@ document.querySelector("#filter-btn").onclick = function () {
     }
   });
 };
+
+carregartarefas();
