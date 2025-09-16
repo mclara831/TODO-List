@@ -66,20 +66,30 @@ main {
     color: #fff;
     border: 0;
     cursor: pointer;
+    height: 56px;
 }
 
 #header-btn {
     width: 40%;
     display: flex;
-    align-content: center;
+    align-items: center;
     justify-content: flex-end;
     gap: 8px;
     padding: 5px;
 }
 
-#header-btn label {
+#header-btn select {
+    text-align: center;
+    display: flex;
+}
+
+#filtrar-label  {
+    width: 200px;
+    text-align: right;
     align-content: center;
 }
+
+
 
 #tarefas {
     display: block;
@@ -105,6 +115,24 @@ main {
     padding: 10px;
     width: 20%;
     gap: 8px; 
+}
+.btn-check {
+    width: 5%;
+    height: 30px;
+}
+
+.tarefa-item {
+    display: flex;
+    margin-bottom: 5px;
+    padding: 5px;
+    align-items: center;
+}
+
+.tarefa-name {
+    padding-left: 3px;
+    height: 100%;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 #titulo {

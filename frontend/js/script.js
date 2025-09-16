@@ -1,32 +1,32 @@
 let tarefaEditando = null;
 
 function getLocalStorage() {
-  return JSON.parse(localStorage.getItem("tarefas"))
+  return JSON.parse(localStorage.getItem("tarefas"));
 }
 
-console.log(getLocalStorage())
+console.log(getLocalStorage());
 
 function setNewObjectToLocalStorage(obj) {
-  var tarefas = getLocalStorage()
-  tarefas.push(obj)
-  localStorage.setItem("tarefas", JSON.stringify(tarefas))
+  var tarefas = getLocalStorage();
+  tarefas.push(obj);
+  localStorage.setItem("tarefas", JSON.stringify(tarefas));
 }
 
 function setArrayToLocalStorage(arr) {
-  localStorage.setItem("tarefas", JSON.stringify(arr))
+  localStorage.setItem("tarefas", JSON.stringify(arr));
 }
 
 document.querySelector("#current_year").innerHTML = new Date().getFullYear();
-document.querySelector("#filtrar").value = 'all';
-
+document.querySelector("#filtrar").value = "all";
 
 function carregartarefas() {
-  var tarefas = getLocalStorage()
+  var tarefas = getLocalStorage();
   var lista = document.querySelector("#lista");
   lista.innerHTML = "";
 
   tarefas.forEach((tarefa) => {
     var li = document.createElement("li");
+    li.className = "tarefa-container";
     li.innerHTML = `
             <div class="title">
                 <p id="titulo">${tarefa.nome}</p>
@@ -79,20 +79,20 @@ document.querySelector("#nova_tarefa").onclick = function () {
 document.querySelector("#form-btn").onclick = function (event) {
   event.preventDefault();
   var form = document.querySelector("#nova-tarefa-form");
-  
+
   const nome = form.elements["nome"].value;
   const descricao = form.elements["descricao"].value;
   const categoria = form.elements["categoria"].value;
   const dataTermino = form.elements["data-termino"].value;
   const prioridade = form.elements["prioridade"].value;
   const status = form.elements["status"].value;
-  
+
   if (!nome || !categoria || !dataTermino || !prioridade || !status) {
     alert("Preencha todos os campos obrigatórios!");
     return;
   }
 
-  var tarefas = getLocalStorage()
+  var tarefas = getLocalStorage();
 
   const tarefa = {
     nome,
@@ -111,7 +111,7 @@ document.querySelector("#form-btn").onclick = function (event) {
     tarefas.push(tarefa);
   }
 
-  setArrayToLocalStorage(tarefas)
+  setArrayToLocalStorage(tarefas);
 
   form.style.display = "none";
   document.querySelector("#tarefas-container").style.display = "initial";
@@ -135,19 +135,19 @@ function verDetalhes() {
 }
 
 function deletarTarefa() {
-  var tarefas = getLocalStorage()
+  var tarefas = getLocalStorage();
   document.querySelectorAll(".deletar").forEach((element) => {
     element.onclick = function (event) {
       const index = event.target.dataset.index;
       tarefas.splice(index, 1);
-      setArrayToLocalStorage(tarefas)
+      setArrayToLocalStorage(tarefas);
       carregartarefas();
     };
   });
 }
 
 function atualizarTarefa() {
-  var tarefas = getLocalStorage()
+  var tarefas = getLocalStorage();
   var atualizar_btns = document.querySelectorAll(".editar");
   for (let i = 0; i < tarefas.length; i++) {
     atualizar_btns[i].onclick = function () {
@@ -172,9 +172,10 @@ function atualizarTarefa() {
 }
 
 // filtrar tarefas
-document.querySelector("#filter-btn").onclick = function () {
+document.querySelector("#filter-btn").onclick = filtrar();
 
-  var tarefas = getLocalStorage()
+function filtrar() {
+  var tarefas = getLocalStorage();
 
   var value = document.querySelector("#filtrar").value;
   var lista = document.querySelector("#lista");
@@ -188,6 +189,7 @@ document.querySelector("#filter-btn").onclick = function () {
   tarefas.forEach((tarefa) => {
     if (value.toLocaleLowerCase() == tarefa.status.toLocaleLowerCase()) {
       var li = document.createElement("li");
+      li.className = "tarefa-container";
       li.innerHTML = `
                 <div class="title">
                     <p id="titulo">${tarefa.nome}</p>
@@ -208,6 +210,98 @@ document.querySelector("#filter-btn").onclick = function () {
       lista.appendChild(li);
     }
   });
+}
+
+function renderizarParaMudarStatus() {
+  let lista = document.querySelector("#lista");
+  lista.innerHTML = "";
+  const tarefas = getLocalStorage();
+
+  tarefas.forEach((tarefa) => {
+    const li = document.createElement("li");
+    li.className = "tarefa-item";
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.className = "btn-check";
+    input.id = `tarefa-${tarefa.nome}-${tarefas.indexOf(tarefa)}`;
+    input.value = tarefa.nome;
+    input.autocomplete = "off";
+
+    const label = document.createElement("label");
+    label.className = "tarefa-name";
+    label.htmlFor = input.id;
+    label.textContent = tarefa.nome;
+
+    li.appendChild(input);
+    li.appendChild(label);
+    lista.appendChild(li);
+  });
+  mudarStatusDeMultiplasTarefas();
+}
+
+document.querySelector("#mudar-status-btn").onclick = function (event) {
+  event.preventDefault();
+  renderizarParaMudarStatus();
 };
+
+function mudarStatusDeMultiplasTarefas() {
+
+  let label = document.querySelector("#filtrar-label");
+  label.innerHTML = "Mudar status para: ";
+
+  let filtrar_btn = document.querySelector("#filter-btn");
+  filtrar_btn.innerHTML = "Aplicar";
+  
+  var select = document.querySelector("#filtrar").value;
+
+  let all_option = document.querySelector("[value='all']");
+  let todo_option = document.querySelector("[value='To do']");
+
+  if (all_option) {
+    all_option.style.display = "none";
+    all_option.selected = false;
+  }
+
+  if (todo_option) {
+    todo_option.selected = true;
+    select.value = "To do";
+  }
+
+  var tarefas = getLocalStorage();
+
+  filtrar_btn.onclick = function () {
+    const inputs = document.querySelectorAll("input[type=checkbox]:checked");
+    select = document.querySelector("#filtrar").value;
+    console.log(select)
+
+    inputs.forEach((i) => {
+      var t = tarefas.find(
+        (t) => `tarefa-${t.nome}-${tarefas.indexOf(t)}` == i.id
+      );
+      var index = tarefas.indexOf(t);
+      if (t) {
+        t.status = select;
+        tarefas[index] = t;
+      }
+    });
+
+    setArrayToLocalStorage(tarefas);
+    label.innerHTML = "Filtrar por: ";
+    filtrar_btn.innerHTML = "Filtrar";
+    filtrar_btn.onclick = filtrar;
+
+    if (all_option) {
+      all_option.style.display = "initial"; 
+      all_option.selected = true;
+    }
+
+    if (todo_option) {
+      todo_option.selected = false;
+    }
+
+    carregartarefas();
+  };
+}
 
 carregartarefas();
